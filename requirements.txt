@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+pyopensky
+requests
+pandas
+numpy
+scikit-learn
+langchain-aws
+langchain
+boto3
+folium
+python-dotenv
+pytest

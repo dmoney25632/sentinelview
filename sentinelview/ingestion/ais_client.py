@@ -7,6 +7,8 @@ from typing import Optional
 import pandas as pd
 import requests
 
+from sentinelview.utils.mock_data import generate_mock_vessels
+
 _log = logging.getLogger(__name__)
 
 _AIS_API_URL = "https://data.aishub.net/ws.php"
@@ -67,6 +69,10 @@ class AISHubClient:
             heading, navstat, callsign, destination, imo. Returns an empty
             DataFrame on error.
         """
+        if os.getenv("SENTINELVIEW_MOCK", "").lower() == "true":
+            _log.info("SENTINELVIEW_MOCK=true — returning mock vessel data.")
+            return generate_mock_vessels()
+
         try:
             params: dict = {
                 "username": self.username,

@@ -1,10 +1,13 @@
 """OpenSky Network ADS-B flight data ingestion client."""
 
 import logging
+import os
 from typing import Optional
 
 import pandas as pd
 from pyopensky.rest import REST
+
+from sentinelview.utils.mock_data import generate_mock_flights
 
 _log = logging.getLogger(__name__)
 
@@ -84,6 +87,10 @@ class OpenSkyClient:
             on_ground, timestamp. Returns an empty DataFrame when the API
             returns no data.
         """
+        if os.getenv("SENTINELVIEW_MOCK", "").lower() == "true":
+            _log.info("SENTINELVIEW_MOCK=true — returning mock flight data.")
+            return generate_mock_flights()
+
         try:
             bounds = None
             if bbox is not None:

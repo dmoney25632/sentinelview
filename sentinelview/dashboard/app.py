@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 import logging
+import json
 from typing import Union
 
 import pandas as pd
@@ -203,7 +204,7 @@ async def api_anomalies() -> JSONResponse:
 
     result = _run_vessel_pipeline(raw)
     anomalies = result[result["is_anomalous"] == 1]
-    return JSONResponse(anomalies.to_dict(orient="records"))
+    return JSONResponse(content=json.loads(anomalies.to_json(orient="records")))
 
 
 @app.get("/api/status", response_class=JSONResponse)
